@@ -19,7 +19,7 @@ public class CourseController {
     @GetMapping
     ResponseEntity<Page<CourseEntity>> listAllCourses(
             @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(defaultValue = "20") int size
     ) {
         return ResponseEntity.ok().body(service.getAllCourses(page, size));
     }
