@@ -29,4 +29,9 @@ public class CourseController {
         service.saveCourse(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @PutMapping
+    ResponseEntity<> updtCourse(@RequestBody ...) {
+        return ;
+    }
 }
