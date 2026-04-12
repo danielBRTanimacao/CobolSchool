@@ -1,6 +1,7 @@
 package CobolSchool.controller;
 
 import CobolSchool.DTOs.courses.RequestCourseDTO;
+import CobolSchool.DTOs.courses.RequestUpdateCourseDTO;
 import CobolSchool.entities.CourseEntity;
 import CobolSchool.service.CourseService;
 import lombok.RequiredArgsConstructor;
@@ -31,7 +32,7 @@ public class CourseController {
     }
 
     @PutMapping
-    ResponseEntity<> updtCourse(@RequestBody ...) {
+    ResponseEntity<> updtCourse(@RequestBody RequestUpdateCourseDTO dto) {
         return ;
     }
 }
