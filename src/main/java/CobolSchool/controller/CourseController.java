@@ -33,6 +33,6 @@ public class CourseController {
 
     @PutMapping
     ResponseEntity<Void> updtCourse(@RequestBody RequestUpdateCourseDTO dto) {
-        return ;
+        return null;
     }
 }
