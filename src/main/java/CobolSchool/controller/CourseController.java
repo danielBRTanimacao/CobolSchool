@@ -4,6 +4,7 @@ import CobolSchool.DTOs.courses.RequestCourseDTO;
 import CobolSchool.DTOs.courses.RequestUpdateCourseDTO;
 import CobolSchool.entities.CourseEntity;
 import CobolSchool.service.CourseService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class CourseController {
     }
 
     @PostMapping
-    ResponseEntity<Void> createCourse(@RequestBody RequestCourseDTO dto) {
+    ResponseEntity<Void> createCourse(@Valid @RequestBody RequestCourseDTO dto) {
         service.saveCourse(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
