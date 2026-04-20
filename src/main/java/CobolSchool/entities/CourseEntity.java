@@ -20,8 +20,6 @@ public class CourseEntity {
     private String title;
     private byte[] image;
 
-    // aulas
-
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 }

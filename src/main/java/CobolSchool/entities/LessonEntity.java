@@ -16,5 +16,10 @@ public class LessonEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private Long courseId;
+
     private String name;
+
+    private String thumbnailPath;
+    private String videoPath;
 }
