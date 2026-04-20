@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Getter
 @Setter
@@ -19,8 +20,10 @@ public class CourseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
+    private List<String> lessonsId;
+
     private String title;
-    private byte[] image;
+    private String thumbnailPath;
 
     @CreatedDate
     private LocalDateTime createdAt;
