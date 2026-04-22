@@ -5,6 +5,7 @@ import CobolSchool.DTOs.courses.RequestUpdateCourseDTO;
 import CobolSchool.entities.CourseEntity;
 import CobolSchool.service.CourseService;
 import jakarta.validation.Valid;
+import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
@@ -32,8 +33,9 @@ public class CourseController {
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
-    @PutMapping
-    ResponseEntity<Void> updtCourse(@RequestBody RequestUpdateCourseDTO dto) {
-        return null;
+    @PutMapping("/{id}")
+    ResponseEntity<Void> updtCourse(@RequestBody RequestUpdateCourseDTO dto, @PathVariable Long id) {
+        service.updateCourse(dto, id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 }

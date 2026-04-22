@@ -20,7 +20,8 @@ public class CourseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private List<String> lessonsId;
+    @OneToMany
+    private List<LessonEntity> lessonsId;
 
     private String title;
     private String thumbnailPath;

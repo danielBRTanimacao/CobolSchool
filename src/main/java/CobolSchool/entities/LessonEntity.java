@@ -1,5 +1,6 @@
 package CobolSchool.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,7 +20,9 @@ public class LessonEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long courseId;
+    @OneToOne
+    @JsonIgnore
+    private CourseEntity courseId;
 
     private String name;
 

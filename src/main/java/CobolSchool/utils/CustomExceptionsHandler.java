@@ -1,5 +1,6 @@
 package CobolSchool.utils;
 
+import CobolSchool.utils.customs.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -36,5 +37,12 @@ public class CustomExceptionsHandler {
         Map<String, String> error = new HashMap<>();
         error.put("error", cause.getMessage());
         return new ResponseEntity<>(error, HttpStatus.BAD_REQUEST);
+    }
+
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<Map<String, String>> notFoundException(NotFoundException cause) {
+        Map<String, String> error = new HashMap<>();
+        error.put("error", cause.getMessage());
+        return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
     }
 }

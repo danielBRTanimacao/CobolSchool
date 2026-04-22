@@ -7,6 +7,6 @@ public record RequestCourseDTO(
         @NotBlank
         String title,
         @NotNull
-        byte[] image
+        String image
 ) {
 }
