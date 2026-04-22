@@ -36,7 +36,7 @@ public class CourseService {
 
         course.setTitle(data.title());
         course.setThumbnailPath(data.thumb());
-        course.setLessonsId(data.lesson());
+        course.addLesson(data.lesson());
 
         repository.save(course);
     }

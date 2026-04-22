@@ -20,9 +20,9 @@ public class LessonEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne
+    @ManyToOne
     @JsonIgnore
-    private CourseEntity courseId;
+    private CourseEntity course;
 
     private String name;
 

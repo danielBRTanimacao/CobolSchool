@@ -9,6 +9,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Getter
@@ -20,8 +21,8 @@ public class CourseEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToMany
-    private List<LessonEntity> lessonsId;
+    @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
+    private List<LessonEntity> lessons;
 
     private String title;
     private String thumbnailPath;
@@ -30,4 +31,12 @@ public class CourseEntity {
     private LocalDateTime createdAt;
     @LastModifiedDate
     private LocalDateTime updatedAt;
+
+    public void addLesson(LessonEntity lesson){
+        if (this.lessons == null) {
+            this.lessons = new ArrayList<>();
+        }
+        this.lessons.add(lesson);
+        lesson.setCourse(this);
+    }
 }
