@@ -9,8 +9,10 @@ import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 @RestController
 @RequestMapping("api/courses")
@@ -27,9 +29,9 @@ public class CourseController {
         return ResponseEntity.ok().body(service.getAllCourses(page, size));
     }
 
-    @PostMapping
-    ResponseEntity<Void> createCourse(@Valid @RequestBody RequestCourseDTO dto) {
-        service.saveCourse(dto);
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<Void> createCourse(@Valid @RequestBody RequestCourseDTO dto, @RequestPart("image") MultipartFile image) {
+        service.saveCourse(dto, image);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
