@@ -5,6 +5,6 @@ import CobolSchool.entities.LessonEntity;
 public record RequestUpdateCourseDTO(
         String title,
         String thumb,
-        LessonEntity lesson
+        Long lesson
 ) {
 }

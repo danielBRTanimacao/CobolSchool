@@ -18,7 +18,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 public class CourseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @OneToMany(mappedBy = "course", cascade = CascadeType.ALL)
