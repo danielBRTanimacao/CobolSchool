@@ -30,8 +30,8 @@ public class CourseController {
     }
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    ResponseEntity<Void> createCourse(@Valid @RequestBody RequestCourseDTO dto, @RequestPart("image") MultipartFile image) {
-        service.saveCourse(dto, image);
+    ResponseEntity<Void> createCourse(@Valid @ModelAttribute RequestCourseDTO dto) {
+        service.saveCourse(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 

@@ -19,6 +19,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.time.LocalDateTime;
 import java.util.UUID;
 
 
@@ -32,11 +33,11 @@ public class CourseService {
     @Value("${upload.path}")
     private String uploadPath;
 
-    public void saveCourse(RequestCourseDTO data, MultipartFile imageFile) {
+    public void saveCourse(RequestCourseDTO data) {
         CourseEntity course = new CourseEntity();
         course.setTitle(data.title());
 
-        String fileName = storeFile(imageFile);
+        String fileName = storeFile(data.image());
         course.setThumbnailPath(fileName);
 
         repository.save(course);
@@ -66,16 +67,23 @@ public class CourseService {
 
     private String storeFile(MultipartFile file) {
         try {
-            String fileName = UUID.randomUUID() + "_" + file.getOriginalFilename();
-            Path targetLocation = Paths.get(uploadPath).resolve(fileName);
+            Path rootPath = Paths.get(uploadPath).toAbsolutePath().normalize();
 
-            Files.createDirectories(targetLocation.getParent());
+            if (!Files.exists(rootPath)) {
+                Files.createDirectories(rootPath);
+            }
+
+            String originalFileName = file.getOriginalFilename() != null ? file.getOriginalFilename() : "file";
+            String cleanFileName = originalFileName.replaceAll("[^a-zA-Z0-9.\\-]", "_");
+            String fileName = UUID.randomUUID() + "_" + cleanFileName;
+
+            Path targetLocation = rootPath.resolve(fileName);
 
             Files.copy(file.getInputStream(), targetLocation, StandardCopyOption.REPLACE_EXISTING);
 
             return fileName;
         } catch (IOException ex) {
-            throw new RuntimeException("Err to save file name", ex);
+            throw new RuntimeException("Err saving file: " + ex.getMessage());
         }
     }
 }
