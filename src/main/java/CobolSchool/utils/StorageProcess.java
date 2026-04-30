@@ -17,6 +17,9 @@ public class StorageProcess {
     @Value("${upload.path}")
     private String uploadPath;
 
+    @Value("${upload.video.path}")
+    private String uploadVideoPath;
+
     public String storeFile(MultipartFile file) {
         try {
             Path rootPath = Paths.get(uploadPath).toAbsolutePath().normalize();
