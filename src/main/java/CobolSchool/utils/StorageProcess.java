@@ -21,8 +21,20 @@ public class StorageProcess {
     private String uploadVideoPath;
 
     public String storeFile(MultipartFile file) {
+        return store(file, uploadPath);
+    }
+
+    public String storeVideo(MultipartFile file) {
+        return store(file, uploadVideoPath);
+    }
+
+    private String store(MultipartFile file, String destinationPath) {
         try {
-            Path rootPath = Paths.get(uploadPath).toAbsolutePath().normalize();
+            if (file.isEmpty()) {
+                throw new RuntimeException("Failed to store empty file.");
+            }
+
+            Path rootPath = Paths.get(destinationPath).toAbsolutePath().normalize();
 
             if (!Files.exists(rootPath)) {
                 Files.createDirectories(rootPath);
