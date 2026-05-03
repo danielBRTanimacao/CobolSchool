@@ -1,6 +1,7 @@
 package CobolSchool.service;
 
 import CobolSchool.DTOs.lessons.RequestLessonDTO;
+import CobolSchool.entities.CourseEntity;
 import CobolSchool.entities.LessonEntity;
 import CobolSchool.repository.LessonRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,8 @@ public class LessonService {
     public void saveLesson(RequestLessonDTO data) {
         LessonEntity lesson = new LessonEntity();
         lesson.setName(data.name());
+
+        String fileName = strProcess.storeFile(data.video());
 
         repository.save(lesson);
     }
