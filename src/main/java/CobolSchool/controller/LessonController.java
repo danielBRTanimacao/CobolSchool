@@ -5,11 +5,9 @@ import CobolSchool.service.LessonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("api/lessons")
@@ -18,8 +16,8 @@ public class LessonController {
 
     private final LessonService service;
 
-    @PostMapping
-    ResponseEntity<Void> createLesson(@Valid @RequestBody RequestLessonDTO dto) {
+    @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    ResponseEntity<Void> createLesson(@Valid @ModelAttribute RequestLessonDTO dto) {
         service.saveLesson(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
