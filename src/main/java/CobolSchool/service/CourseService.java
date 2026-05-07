@@ -42,6 +42,7 @@ public class CourseService {
         repository.save(course);
     }
 
+    // modificar pra salvar correto o caminho
     public void updateCourse(RequestUpdateCourseDTO data, Long id) {
         CourseEntity course = repository.findById(id).orElseThrow(
                 () -> new NotFoundException("Course not found")
