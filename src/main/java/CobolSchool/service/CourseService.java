@@ -47,8 +47,12 @@ public class CourseService {
                 () -> new NotFoundException("Course not found")
         );
 
-        course.setTitle(data.title());
-        course.setThumbnailPath(data.thumb());
+        if (data.title() != null) {
+            course.setTitle(data.title());
+        }
+        if (data.thumb() != null) {
+            course.setThumbnailPath(data.thumb());
+        }
 
         if (data.lesson() != null) {
             var lesson = lessonRepository.findById(data.lesson())
