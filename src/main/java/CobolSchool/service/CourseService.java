@@ -8,19 +8,10 @@ import CobolSchool.repository.LessonRepository;
 import CobolSchool.utils.StorageProcess;
 import CobolSchool.utils.customs.NotFoundException;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.UUID;
 
 
 @Service
@@ -50,8 +41,10 @@ public class CourseService {
         if (data.title() != null) {
             course.setTitle(data.title());
         }
+
         if (data.thumb() != null) {
-            course.setThumbnailPath(data.thumb());
+            String fileName = strProcess.storeFile(data.thumb());
+            course.setThumbnailPath(fileName);
         }
 
         if (data.lesson() != null) {

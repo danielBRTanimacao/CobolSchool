@@ -34,7 +34,7 @@ public class CourseController {
     }
 
     @PutMapping("/{id}")
-    ResponseEntity<Void> updtCourse(@RequestBody RequestUpdateCourseDTO dto, @PathVariable Long id) {
+    ResponseEntity<Void> updtCourse(@ModelAttribute  RequestUpdateCourseDTO dto, @PathVariable Long id) {
         service.updateCourse(dto, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
