@@ -1,6 +1,7 @@
 package CobolSchool.controller;
 
 import CobolSchool.DTOs.lessons.RequestLessonDTO;
+import CobolSchool.DTOs.lessons.RequestUpdateLessonDTO;
 import CobolSchool.service.LessonService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -20,6 +21,12 @@ public class LessonController {
     ResponseEntity<Void> createLesson(@Valid @ModelAttribute RequestLessonDTO dto) {
         service.saveLesson(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
+    }
+
+    @PutMapping("/{id}")
+    ResponseEntity<Void> updtLesson(@ModelAttribute RequestUpdateLessonDTO dto, @PathVariable Long id) {
+        service.updateLesson(dto, id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping("/{id}")
