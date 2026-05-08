@@ -38,4 +38,10 @@ public class CourseController {
         service.updateCourse(dto, id);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> delCourse(@PathVariable Long id) {
+        service.deleteCourse(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }

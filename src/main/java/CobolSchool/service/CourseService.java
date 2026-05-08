@@ -33,6 +33,13 @@ public class CourseService {
         repository.save(course);
     }
 
+    public void deleteCourse(Long id) {
+        CourseEntity course = repository.findById(id).orElseThrow(
+                () -> new NotFoundException("Course not found")
+        );
+        repository.delete(course);
+    }
+
     public void updateCourse(RequestUpdateCourseDTO data, Long id) {
         CourseEntity course = repository.findById(id).orElseThrow(
                 () -> new NotFoundException("Course not found")
