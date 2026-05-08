@@ -4,6 +4,7 @@ import CobolSchool.DTOs.lessons.RequestLessonDTO;
 import CobolSchool.entities.LessonEntity;
 import CobolSchool.repository.LessonRepository;
 import CobolSchool.utils.StorageProcess;
+import CobolSchool.utils.customs.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -27,5 +28,11 @@ public class LessonService {
     }
 
     void updt() {}
-    void del() {}
+
+    public void deleteLesson(Long id) {
+        LessonEntity lesson = repository.findById(id).orElseThrow(
+                () -> new NotFoundException("Lesson not found")
+        );
+        repository.delete(lesson);
+    }
 }

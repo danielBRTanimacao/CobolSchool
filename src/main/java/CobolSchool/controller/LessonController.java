@@ -21,4 +21,10 @@ public class LessonController {
         service.saveLesson(dto);
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
+
+    @DeleteMapping("/{id}")
+    ResponseEntity<Void> delLesson(@PathVariable Long id) {
+        service.deleteLesson(id);
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+    }
 }
