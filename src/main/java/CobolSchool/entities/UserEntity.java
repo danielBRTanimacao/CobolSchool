@@ -20,7 +20,11 @@ public class UserEntity {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
+    @Column(unique = true)
     private String name;
+    @Column(unique = true)
+    private String email;
+    private String tokenMail;
     private String password;
 
     @CreatedDate
