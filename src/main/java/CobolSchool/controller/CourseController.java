@@ -27,6 +27,11 @@ public class CourseController {
         return ResponseEntity.ok().body(service.getAllCourses(page, size));
     }
 
+    @GetMapping("/{id}")
+    ResponseEntity<CourseEntity> specificCourse(@PathVariable Long id) {
+        return ResponseEntity.ok().body(service.getCourse(id));
+    }
+
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     ResponseEntity<Void> createCourse(@Valid @ModelAttribute RequestCourseDTO dto) {
         service.saveCourse(dto);
