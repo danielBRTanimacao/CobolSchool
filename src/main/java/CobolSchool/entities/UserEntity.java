@@ -21,7 +21,7 @@ public class UserEntity {
     private UUID id;
 
     @Column(unique = true)
-    private String name;
+    private String username;
     @Column(unique = true)
     private String email;
     private String tokenMail;

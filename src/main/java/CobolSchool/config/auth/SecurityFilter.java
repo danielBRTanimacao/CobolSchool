@@ -1,6 +1,16 @@
 package CobolSchool.config.auth;
 
+import CobolSchool.entities.UserEntity;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Component;
+import org.springframework.web.filter.OncePerRequestFilter;
+
+import java.io.IOException;
+import java.util.Collections;
 
 @Component
 @RequiredArgsConstructor
@@ -18,7 +28,7 @@ public class SecurityFilter extends OncePerRequestFilter {
         var login = tokenService.validateToken(token);
 
         if (login != null) {
-            AdminEntity user = userRepository.findByEmail(login).orElseThrow(
+            UserEntity user = userRepository.findByUsername(login).orElseThrow(
                     () -> new EntityNotFoundException("User Not Found")
             );
             var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
