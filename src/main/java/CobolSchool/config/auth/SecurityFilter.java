@@ -1,37 +1,36 @@
 package CobolSchool.config.auth;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.http.HttpMethod;
 
-@Configuration
-@EnableWebSecurity
+@Component
 @RequiredArgsConstructor
-public class SecurityConfig {
-    private final SecurityFilter securityFilter;
+public class SecurityFilter extends OncePerRequestFilter {
+    private final TokenService tokenService;
+    private final AdminRepository userRepository;
 
-    @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        http
-                .cors(Customizer.withDefaults()).csrf(AbstractHttpConfigurer::disable)
-                .sessionManagement(session -> session.sessionCreationPolicy(
-                        SessionCreationPolicy.STATELESS)
-                )
-                .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/api").permitAll()
-                )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
-        return http.build();
+    @Override
+    protected void doFilterInternal(
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
+    ) throws ServletException, IOException {
+        var token =  this.recoverToken(request);
+        var login = tokenService.validateToken(token);
+
+        if (login != null) {
+            AdminEntity user = userRepository.findByEmail(login).orElseThrow(
+                    () -> new EntityNotFoundException("User Not Found")
+            );
+            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
+            var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+            SecurityContextHolder.getContext().setAuthentication(authentication);
+        }
+        filterChain.doFilter(request, response);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
-        return authenticationConfiguration.getAuthenticationManager();
+    private String recoverToken(HttpServletRequest request) {
+        var authHeader = request.getHeader("Authorization");
+        if (authHeader != null) return authHeader.replace("Bearer ", "");
+        return null;
     }
 }
