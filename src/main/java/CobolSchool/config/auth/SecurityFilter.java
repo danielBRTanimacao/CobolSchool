@@ -3,10 +3,14 @@ package CobolSchool.config.auth;
 import CobolSchool.entities.UserEntity;
 import CobolSchool.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
