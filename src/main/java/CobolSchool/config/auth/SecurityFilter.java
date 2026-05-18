@@ -1,6 +1,7 @@
 package CobolSchool.config.auth;
 
 import CobolSchool.entities.UserEntity;
+import CobolSchool.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,7 +17,7 @@ import java.util.Collections;
 @RequiredArgsConstructor
 public class SecurityFilter extends OncePerRequestFilter {
     private final TokenService tokenService;
-    private final AdminRepository userRepository;
+    private final UserRepository userRepository;
 
     @Override
     protected void doFilterInternal(
