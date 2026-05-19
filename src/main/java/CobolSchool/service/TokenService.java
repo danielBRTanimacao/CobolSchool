@@ -1,6 +1,7 @@
 package CobolSchool.service;
 
 import CobolSchool.entities.UserEntity;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 
 import java.time.Instant;
@@ -9,6 +10,7 @@ import java.time.ZoneOffset;
 
 import static org.springframework.security.config.Elements.JWT;
 
+@Slf4j
 public class TokenService {
     @Value("${api.security.token.secret}")
     private String secret;
