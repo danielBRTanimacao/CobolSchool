@@ -22,16 +22,16 @@ public class TokenService {
 
     public String generateToken(UserEntity user) {
         try {
-            log.debug("Generating token for user: {}", user.getEmail());
+            log.debug("Generating token for user: {}", user.getUsername());
             Algorithm algorithm = Algorithm.HMAC256(secret);
             return JWT.create()
                     .withIssuer("login-auth-api")
-                    .withSubject(user.getEmail())
+                    .withSubject(user.getUsername())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
 
         } catch (JWTCreationException e) {
-            log.error("Error while generating token for user: {}", user.getEmail(), e);
+            log.error("Error while generating token for user: {}", user.getUsername(), e);
             throw new TokenException("Error while authenticating");
         }
     }

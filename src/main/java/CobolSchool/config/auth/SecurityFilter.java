@@ -3,7 +3,6 @@ package CobolSchool.config.auth;
 import CobolSchool.entities.UserEntity;
 import CobolSchool.repository.UserRepository;
 import CobolSchool.service.TokenService;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -35,12 +34,12 @@ public class SecurityFilter extends OncePerRequestFilter {
         var login = tokenService.validateToken(token);
 
         if (login != null) {
-            UserEntity user = userRepository.findByUsername(login).orElseThrow(
-                    () -> new EntityNotFoundException("User Not Found")
-            );
-            var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_ADMIN"));
-            var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
-            SecurityContextHolder.getContext().setAuthentication(authentication);
+            var user = userRepository.findByUsername(login);
+            if (user.isPresent()) {
+                var authorities = Collections.singletonList(new SimpleGrantedAuthority("ROLE_USER"));
+                var authentication = new UsernamePasswordAuthenticationToken(user, null, authorities);
+                SecurityContextHolder.getContext().setAuthentication(authentication);
+            }
         }
         filterChain.doFilter(request, response);
     }
