@@ -1,6 +1,8 @@
 package CobolSchool.service;
 
 import CobolSchool.entities.UserEntity;
+import CobolSchool.utils.customs.TokenException;
+import com.auth0.jwt.JWT;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 import lombok.extern.slf4j.Slf4j;
@@ -11,8 +13,6 @@ import com.auth0.jwt.algorithms.Algorithm;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-
-import static org.springframework.security.config.Elements.JWT;
 
 @Service
 @Slf4j
