@@ -36,7 +36,7 @@ public class TokenService {
         }
     }
 
-    public String validateTokens(String token){
+    public String validateToken(String token){
         try {
             log.debug("Validating token: {}", token);
             Algorithm algorithm = Algorithm.HMAC256(secret);
