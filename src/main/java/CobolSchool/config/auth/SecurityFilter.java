@@ -1,6 +1,5 @@
 package CobolSchool.config.auth;
 
-import CobolSchool.entities.UserEntity;
 import CobolSchool.repository.UserRepository;
 import CobolSchool.service.TokenService;
 import jakarta.servlet.FilterChain;
