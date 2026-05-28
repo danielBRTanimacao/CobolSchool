@@ -30,7 +30,7 @@ public class SecurityConfig {
                         SessionCreationPolicy.STATELESS)
                 )
                 .authorizeHttpRequests(authorize -> authorize
-                        .requestMatchers(HttpMethod.GET, "/api").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/courses").permitAll()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
