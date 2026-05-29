@@ -3,7 +3,7 @@ package CobolSchool.service;
 import org.springframework.stereotype.Service;
 
 @Service
-public class userService {
+public class UserService {
     public void login() {
 
     }
