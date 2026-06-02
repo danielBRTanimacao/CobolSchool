@@ -17,36 +17,44 @@ import java.time.ZoneOffset;
 @Service
 @Slf4j
 public class TokenService {
+
     @Value("${api.security.token.secret}")
     private String secret;
 
     public String generateToken(UserEntity user) {
+        log.info("Generating security token for user: {}", user.getUsername());
         try {
-            log.debug("Generating token for user: {}", user.getUsername());
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.create()
+            String token = JWT.create()
                     .withIssuer("login-auth-api")
                     .withSubject(user.getUsername())
                     .withExpiresAt(this.generateExpirationDate())
                     .sign(algorithm);
 
+            log.info("Token successfully generated for user: {}", user.getUsername());
+            return token;
+
         } catch (JWTCreationException e) {
-            log.error("Error while generating token for user: {}", user.getUsername(), e);
+            log.error("Critical error during token creation for user: {}", user.getUsername(), e);
             throw new TokenException("Error while authenticating");
         }
     }
 
-    public String validateToken(String token){
+    public String validateToken(String token) {
+        log.debug("Attempting to validate incoming token");
         try {
-            log.debug("Validating token: {}", token);
             Algorithm algorithm = Algorithm.HMAC256(secret);
-            return JWT.require(algorithm)
+            String subject = JWT.require(algorithm)
                     .withIssuer("login-auth-api")
                     .build()
                     .verify(token)
                     .getSubject();
+
+            log.debug("Token validated successfully for subject: {}", subject);
+            return subject;
+
         } catch (JWTVerificationException e) {
-            log.error("Error while validating token: {}", e.getMessage());
+            log.warn("Token verification failed: {}", e.getMessage());
             return null;
         }
     }
