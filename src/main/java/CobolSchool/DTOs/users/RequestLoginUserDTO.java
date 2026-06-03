@@ -1,4 +1,7 @@
 package CobolSchool.DTOs.users;
 
-public record RequestLoginUserDTO() {
+public record RequestLoginUserDTO(
+        String username,
+        String password
+) {
 }
