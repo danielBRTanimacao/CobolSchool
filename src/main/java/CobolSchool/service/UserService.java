@@ -1,37 +1,50 @@
 package CobolSchool.service;
 
+import CobolSchool.DTOs.users.RequestLoginUserDTO;
+import CobolSchool.DTOs.users.RequestUserDTO;
 import CobolSchool.DTOs.users.ResponseUserDTO;
 import CobolSchool.entities.UserEntity;
+import CobolSchool.repository.UserRepository;
 import jakarta.persistence.EntityNotFoundException;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Slf4j
+@RequiredArgsConstructor
 public class UserService {
-    public ResponseUserDTO login(RequestUserDTO data) {
-        UserEntity user = new UserEntity();
 
-        log.info("Login attempt: {}", user.getEmail());
-        AdminEntity adminEntity = userRepository.findByEmail(user.getEmail())
+    private final UserRepository repository;
+
+    private final TokenService tokenService;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public ResponseUserDTO login(RequestLoginUserDTO user) {
+        log.info("Login attempt: {}", user.username());
+        UserEntity userEntity = repository.findByUsername(user.username())
                 .orElseThrow(() -> {
-                    log.error("User not found: {}", user.getEmail());
-                    return new EntityNotFoundException("User with email " + user.getEmail() + " not found");
+                    log.error("User not found: {}", user.username());
+                    return new EntityNotFoundException("User with name " + user.username() + " not found");
                 });
 
-        if (!this.passwordEncoder.matches(user.getPassword(), adminEntity.getPassword())) {
-            log.error("Incorrect password for user {}", adminEntity.getEmail());
+        if (!this.passwordEncoder.matches(user.password(), userEntity.getPassword())) {
+            log.error("Incorrect password for user {}", userEntity.getEmail());
             throw new IllegalArgumentException("Invalid email or password");
         }
 
-        userRepository.save(adminEntity);
-        log.info("User {} successfully verified.", adminEntity.getEmail());
+        repository.save(userEntity);
+        log.info("User {} successfully verified.", userEntity.getEmail());
 
-        String token = this.tokenService.generateToken(adminEntity);
-        log.info("JWT generated for user {}", adminEntity.getEmail());
+        String token = this.tokenService.generateToken(userEntity);
+        log.info("JWT generated for user {}", userEntity.getEmail());
 
-        return new ResponseLoginDTO(adminEntity.getId(), adminEntity.getUsername(), token);
+        return new ResponseUserDTO(token);
     }
 
-    public void createUser() {
+    public void createUser(RequestUserDTO user) {
 
     }
 
