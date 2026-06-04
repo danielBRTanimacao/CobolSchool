@@ -11,6 +11,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.nio.file.AccessDeniedException;
+import java.util.UUID;
+
+import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
+
 @Service
 @Slf4j
 @RequiredArgsConstructor
@@ -53,6 +58,15 @@ public class UserService {
     }
 
     public void deleteUser() {
+        UserEntity currentUser = (UserEntity) authentication.getPrincipal();
+        UUID currentUserId = currentUser.getId();
 
+        if (!id.equals(currentUserId)) {
+            throw new AccessDeniedException("You cannot delete other users.");
+        }
+        UserEntity user = repository.findById(id).orElseThrow(
+                () -> new EntityNotFoundException("User not found ID:" + id)
+        );
+        repository.delete(user);
     }
 }
