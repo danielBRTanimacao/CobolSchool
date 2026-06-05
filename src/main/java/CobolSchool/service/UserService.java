@@ -5,16 +5,16 @@ import CobolSchool.DTOs.users.RequestUserDTO;
 import CobolSchool.DTOs.users.ResponseUserDTO;
 import CobolSchool.entities.UserEntity;
 import CobolSchool.repository.UserRepository;
+import CobolSchool.utils.customs.AccessDeniedException;
 import jakarta.persistence.EntityNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import java.nio.file.AccessDeniedException;
 import java.util.UUID;
 
-import static org.springframework.data.jpa.domain.AbstractPersistable_.id;
 
 @Service
 @Slf4j
@@ -57,16 +57,18 @@ public class UserService {
 
     }
 
-    public void deleteUser() {
+    public void deleteUser(UUID id, Authentication authentication) {
         UserEntity currentUser = (UserEntity) authentication.getPrincipal();
         UUID currentUserId = currentUser.getId();
 
+        log.info("User ID {} is requesting account deletion for target ID {}", currentUserId, id);
+
         if (!id.equals(currentUserId)) {
+            log.warn("Access denied: User ID {} attempted to delete user ID {}", currentUserId, id);
             throw new AccessDeniedException("You cannot delete other users.");
         }
-        UserEntity user = repository.findById(id).orElseThrow(
-                () -> new EntityNotFoundException("User not found ID:" + id)
-        );
-        repository.delete(user);
+
+        repository.delete(currentUser);
+        log.info("User ID {} successfully deleted their own account", id);
     }
 }
