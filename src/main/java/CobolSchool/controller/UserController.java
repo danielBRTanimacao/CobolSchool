@@ -8,10 +8,10 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/user")
@@ -29,5 +29,11 @@ public class UserController {
     @PostMapping("/login")
     public ResponseEntity<ResponseUserDTO> loginUser(@RequestBody RequestLoginUserDTO data) {
         return ResponseEntity.ok().body(service.login(data));
+    }
+
+    @DeleteMapping
+    public ResponseEntity<Void> delUser(@PathVariable UUID id, Authentication auth) {
+        service.deleteUser(id, auth);
+        return new ResponseEntity<>(HttpStatus.CREATED);
     }
 }
