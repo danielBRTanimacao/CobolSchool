@@ -31,6 +31,8 @@ public class UserController {
         return ResponseEntity.ok().body(service.login(data));
     }
 
+    @PutMapping
+
     @DeleteMapping
     public ResponseEntity<Void> delUser(@PathVariable UUID id, Authentication auth) {
         service.deleteUser(id, auth);
