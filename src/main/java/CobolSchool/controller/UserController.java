@@ -33,7 +33,7 @@ public class UserController {
 
     @PutMapping
     public ResponseEntity<Void> updateUser() {
-
+        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
     @DeleteMapping
