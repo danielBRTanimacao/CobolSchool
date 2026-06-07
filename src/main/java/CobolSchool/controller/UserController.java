@@ -32,6 +32,9 @@ public class UserController {
     }
 
     @PutMapping
+    public ResponseEntity<Void> updateUser() {
+
+    }
 
     @DeleteMapping
     public ResponseEntity<Void> delUser(@PathVariable UUID id, Authentication auth) {
