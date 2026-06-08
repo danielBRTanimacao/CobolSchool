@@ -1,6 +1,7 @@
 package CobolSchool.controller;
 
 import CobolSchool.DTOs.users.RequestLoginUserDTO;
+import CobolSchool.DTOs.users.RequestUpdateUserDTO;
 import CobolSchool.DTOs.users.RequestUserDTO;
 import CobolSchool.DTOs.users.ResponseUserDTO;
 import CobolSchool.service.UserService;
@@ -32,8 +33,12 @@ public class UserController {
     }
 
     @PutMapping
-    public ResponseEntity<Void> updateUser() {
-        service.updateUser();
+    public ResponseEntity<Void> updateUser(
+            @PathVariable UUID id,
+            Authentication auth,
+            @RequestBody RequestUpdateUserDTO data
+    ) {
+        service.updateUser(id, data, auth);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
