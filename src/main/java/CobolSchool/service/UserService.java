@@ -1,6 +1,7 @@
 package CobolSchool.service;
 
 import CobolSchool.DTOs.users.RequestLoginUserDTO;
+import CobolSchool.DTOs.users.RequestUpdateUserDTO;
 import CobolSchool.DTOs.users.RequestUserDTO;
 import CobolSchool.DTOs.users.ResponseUserDTO;
 import CobolSchool.entities.UserEntity;
@@ -53,7 +54,7 @@ public class UserService {
 
     }
 
-    public void updateUser() {
+    public void updateUser(UUID id, Authentication auth, RequestUpdateUserDTO data) {
 
     }
 

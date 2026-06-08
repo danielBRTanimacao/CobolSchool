@@ -38,7 +38,7 @@ public class UserController {
             Authentication auth,
             @RequestBody RequestUpdateUserDTO data
     ) {
-        service.updateUser(id, data, auth);
+        service.updateUser(id, auth, data);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
 
