@@ -6,6 +6,7 @@ import CobolSchool.DTOs.users.RequestUserDTO;
 import CobolSchool.DTOs.users.ResponseUserDTO;
 import CobolSchool.entities.UserEntity;
 import CobolSchool.repository.UserRepository;
+import CobolSchool.utils.EmailService;
 import CobolSchool.utils.TokenGenerator;
 import CobolSchool.utils.customs.AccessDeniedException;
 import jakarta.persistence.EntityNotFoundException;
@@ -27,6 +28,7 @@ public class UserService {
     private final UserRepository repository;
 
     private final TokenService tokenService;
+    private final EmailService emailService;
 
     private final TokenGenerator generator;
 
@@ -56,17 +58,29 @@ public class UserService {
 
     @Transactional
     public void createUser(RequestUserDTO data) {
+        log.info("Starting user registration process for username: {} and email: {}", data.username(), data.email());
+
         UserEntity user = new UserEntity();
-        String token = generator.generateRandomCode();
-
-        boolean emailSubmit = true;
-
         user.setUsername(data.username());
         user.setEmail(data.email());
-        if (emailSubmit) {
-            user.setTokenMail(token);
-        }
+        user.setPassword(passwordEncoder.encode(data.password()));
 
+        String token = generator.generateRandomCode();
+
+        try {
+            log.info("Attempting to send verification email to: {}", data.email());
+            emailService.sendVerificationEmail(data.email(), token);
+
+            log.info("Email sent successfully. Attaching verification token to user");
+            user.setTokenMail(token);
+
+            UserEntity savedUser = repository.save(user);
+            log.info("User successfully created and saved with ID: {}", savedUser.getId());
+
+        } catch (Exception e) {
+            log.error("Failed to process user creation due to email delivery failure for: {}", data.email(), e);
+            throw new RuntimeException("Could not create user because verification email failed to send.");
+        }
     }
 
     public void updateUser(UUID id, Authentication auth, RequestUpdateUserDTO data) {
