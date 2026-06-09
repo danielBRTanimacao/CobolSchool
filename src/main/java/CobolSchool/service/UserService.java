@@ -6,8 +6,10 @@ import CobolSchool.DTOs.users.RequestUserDTO;
 import CobolSchool.DTOs.users.ResponseUserDTO;
 import CobolSchool.entities.UserEntity;
 import CobolSchool.repository.UserRepository;
+import CobolSchool.utils.TokenGenerator;
 import CobolSchool.utils.customs.AccessDeniedException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
@@ -25,6 +27,8 @@ public class UserService {
     private final UserRepository repository;
 
     private final TokenService tokenService;
+
+    private final TokenGenerator generator;
 
     private final PasswordEncoder passwordEncoder;
 
@@ -50,11 +54,18 @@ public class UserService {
         return new ResponseUserDTO(token);
     }
 
+    @Transactional
     public void createUser(RequestUserDTO data) {
         UserEntity user = new UserEntity();
+        String token = generator.generateRandomCode();
+
+        boolean emailSubmit = true;
+
         user.setUsername(data.username());
         user.setEmail(data.email());
-        user.setTokenMail(""); // enviar o email antes de adicionar aqui se o email for enviado blz ele cria o user
+        if (emailSubmit) {
+            user.setTokenMail(token);
+        }
 
     }
 
