@@ -60,6 +60,7 @@ public class UserService {
 
     public void deleteUser(UUID id, Authentication authentication) {
         UserEntity currentUser = (UserEntity) authentication.getPrincipal();
+        assert currentUser != null;
         UUID currentUserId = currentUser.getId();
 
         log.info("User ID {} is requesting account deletion for target ID {}", currentUserId, id);
