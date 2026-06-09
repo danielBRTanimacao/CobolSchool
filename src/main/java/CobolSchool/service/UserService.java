@@ -50,7 +50,11 @@ public class UserService {
         return new ResponseUserDTO(token);
     }
 
-    public void createUser(RequestUserDTO user) {
+    public void createUser(RequestUserDTO data) {
+        UserEntity user = new UserEntity();
+        user.setUsername(data.username());
+        user.setEmail(data.email());
+        user.setTokenMail(""); // enviar o email antes de adicionar aqui se o email for enviado blz ele cria o user
 
     }
 
